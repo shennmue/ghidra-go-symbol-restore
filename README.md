@@ -5,7 +5,7 @@ how it works, here is a link to my blog post that explains it: [url]
 
 No installation is required. The script:
 
-- Try to locates the `.gopclntab` section in the binary. 
+- Tries to locates the `.gopclntab` section in the binary. 
 - Parses the PC (Program Counter) and funcData offsets.
 - Extracts the original function names.
 - Cleans up special characters (to avoid Ghidra errors).
