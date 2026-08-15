@@ -11,4 +11,4 @@ No installation is required. The script:
 - Cleans up special characters (to avoid Ghidra errors).
 - Automatically renames the functions in Ghidra's symbol tree.
 
-<img src="result.png" alt="Result" width="300">
+<img src="result.png" alt="Result" width="1400">
