@@ -9,17 +9,20 @@
 
 #TODO Add User Code Here
 
-START = getMemoryBlock(".gopclntab").getStart()
-TEXT_START = getMemoryBlock(".text").getStart()
+START = getMemoryBlock(".gopclntab")
+TEXT_START = getMemoryBlock(".text")
 
 if not START or not TEXT_START: 
     # It's possible that the .gopclntab and .text memory blocks are not found in the current program,
-    # due to hard stripping.
+    # due to hard stripping for example.
 
-    #But you can still find them by parsing all the momeory blocks 
+    #But you can still find them by parsing all the memory blocks 
     #searching for magics
     # START = findMagicsPcnltab()...
     exit()
+
+START = START.getStart()
+TEXT_START = TEXT_START.getStart()
 
 PTRSIZE = currentProgram.getDefaultPointerSize()
 
@@ -38,7 +41,7 @@ while i < NFUNCTAB:
 
     # PC
     pc_offset = getInt(func_data_addr)
-    pc = getInt(TEXT_START.add(pc_offset))
+    pc = TEXT_START.add(pc_offset)
 
     # Function Name 
     funcdata_offset = getInt(func_data_addr.add(4))
@@ -46,15 +49,26 @@ while i < NFUNCTAB:
     funcname_offset = getInt(funcdata_addr.add(4))
     string_name_addr = FUNCNAMETAB.add(funcname_offset)
 
-    string_name = ""
-    chr = ''
-    while chr != '\x00':
-        chr = getByte(string_name_addr)
-        string_name += chr
-        string_name_addr = string_name_addr.add(1)
+    func_string = ""
+    curr_addr = string_name_addr
+    
+    c = '' 
+    while c != '\x00':
+        b = getByte(curr_addr)        
+        c = chr(b & 0xFF)        
+        if c != '\x00':
+            func_string += c            
+        curr_addr = curr_addr.add(1)
+
+    #clean functions with special characters due to errors in Ghidra
+    func_name = func_string
+    special_chr = [' ', '*', '(', ')', '[', ']', '{', '}', ',', '<', '>',' ']
+    for char in special_chr:
+        func_name = func_name.replace(char, '_')
 
     # Association 
-    createLabel(string_name_addr, string_name, True)
+    if func_name:
+        createLabel(pc, func_name, True)
 
     i += 1
     
