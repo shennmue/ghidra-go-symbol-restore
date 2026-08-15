@@ -53,6 +53,7 @@ while i < NFUNCTAB:
     curr_addr = string_name_addr
     
     c = '' 
+    #just a reminder: from here you have to fetch each byte until you reach a 0
     while c != '\x00':
         b = getByte(curr_addr)        
         c = chr(b & 0xFF)        
