@@ -5,8 +5,10 @@ how it works, here is a link to my blog post that explains it: [url]
 
 No installation is required. The script:
 
-- Locates the `.gopclntab` section in the binary.
+- Try to locates the `.gopclntab` section in the binary. 
 - Parses the PC (Program Counter) and funcData offsets.
 - Extracts the original function names.
 - Cleans up special characters (to avoid Ghidra errors).
 - Automatically renames the functions in Ghidra's symbol tree.
+
+![Result](result.png)
